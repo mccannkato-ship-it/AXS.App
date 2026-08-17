@@ -13,7 +13,7 @@ const cookie = (req) => Object.fromEntries((req.headers.cookie || '').split(';')
 const json = (res, status, body, headers = {}) => { res.writeHead(status, {'content-type':'application/json; charset=utf-8', ...headers}); res.end(JSON.stringify(body)) }
 const hash = (password, salt = randomBytes(16).toString('hex')) => `${salt}:${scryptSync(password, salt, 64).toString('hex')}`
 const verify = (password, stored) => { const [salt, value] = String(stored).split(':'); if (!salt || !value) return false; return timingSafeEqual(Buffer.from(value, 'hex'), scryptSync(password, salt, 64)) }
-async function ensureAuthTable() { if (pool) await pool.query('CREATE TABLE IF NOT EXISTS axs_users (id TEXT PRIMARY KEY, email TEXT UNIQUE NOT NULL, password_hash TEXT NOT NULL, created_at TIMESTAMPTZ NOT NULL DEFAULT NOW())') }
+async function ensureAuthTable() { if (pool) { await pool.query('CREATE TABLE IF NOT EXISTS axs_users (id TEXT PRIMARY KEY, email TEXT UNIQUE NOT NULL, password_hash TEXT NOT NULL, transfer_limit INTEGER NOT NULL DEFAULT 2, created_at TIMESTAMPTZ NOT NULL DEFAULT NOW())'); await pool.query('ALTER TABLE axs_users ADD COLUMN IF NOT EXISTS transfer_limit INTEGER NOT NULL DEFAULT 2'); await pool.query('CREATE TABLE IF NOT EXISTS axs_ticket_transfers (id TEXT PRIMARY KEY, sender_id TEXT NOT NULL REFERENCES axs_users(id), recipient_email TEXT NOT NULL, ticket_id TEXT NOT NULL, event_name TEXT, ticket_name TEXT, created_at TIMESTAMPTZ NOT NULL DEFAULT NOW())') } }
 async function body(req) { let data=''; for await (const chunk of req) data += chunk; return JSON.parse(data || '{}') }
 async function authApi(req, res, url) {
   if (!pool) return json(res, 503, { error: 'Authentication database is not configured.' })
