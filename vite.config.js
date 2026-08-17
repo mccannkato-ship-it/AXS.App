@@ -6,6 +6,7 @@ const publicEnv = {
 }
 
 export default defineConfig({
+  appType: 'spa',
   define: Object.fromEntries(Object.entries(publicEnv).map(([key, value]) => [`import.meta.env.${key}`, JSON.stringify(value)])),
   server: {
     host: '0.0.0.0',
