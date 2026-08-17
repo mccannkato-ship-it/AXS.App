@@ -13,7 +13,26 @@
   <script type="module">
    import { requireAuth, isAdminSession, renderAuthScreen, logout } from './auth-gate.js'
    import { searchTicketmasterEvents } from './ticketmaster-client.js'
-   window.AXS= { requireAuth, isAdminSession, renderAuthScreen, logout, searchTicketmasterEvents, ticketmasterEnabled: false }
+   async function transferTicket(payload) {
+    const response = await fetch('/api/tickets/transfer', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) })
+    const result = await response.json().catch(() => ({}))
+    if (!response.ok) throw new Error(result.error || 'Unable to transfer ticket.')
+    return result
+   }
+   window.AXS= { requireAuth, isAdminSession, renderAuthScreen, logout, searchTicketmasterEvents, transferTicket, ticketmasterEnabled: false }
+   document.addEventListener('submit', async (event) => {
+    const form = event.target.closest('form[data-ticket-transfer]')
+    if (!form) return
+    event.preventDefault()
+    const submit = form.querySelector('[type="submit"]')
+    if (submit) submit.disabled = true
+    try {
+     const result = await transferTicket(Object.fromEntries(new FormData(form)))
+     form.dispatchEvent(new CustomEvent('axs:transfer-sent', { bubbles: true, detail: result }))
+    } catch (error) {
+     form.dispatchEvent(new CustomEvent('axs:transfer-error', { bubbles: true, detail: { message: error.message } }))
+    } finally { if (submit) submit.disabled = false }
+   })
    let ticketNavTap = 0
    let ticketNavTimer
    document.addEventListener('click', (event) => {
