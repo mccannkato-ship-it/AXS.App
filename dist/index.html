@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <link rel="manifest" href="/assets/manifest-Cg2KM5Zg.json">
+  <link rel="manifest" href="/assets/manifest-BhtpQbS-.json">
   <link href="/assets/a6dfbbd55_Screenshot_20260515-022106_GooglePlayStore-xO1Il0FT.jpg" rel="icon" type="image/svg+xml">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
   <meta content="yes" name="apple-mobile-web-app-capable">
@@ -10,25 +10,27 @@
   <meta content="#000f2e" name="theme-color">
   <title>AXS</title>
   <meta content="Your ultimate companion for event discovery and seamless ticket management." name="description">
-  <meta content="AXS " property="og:title">
+  <meta content="AXS" property="og:title">
   <meta content="Your ultimate companion for event discovery and seamless ticket management." property="og:description">
   <meta content="/assets/a6dfbbd55_Screenshot_20260515-022106_GooglePlayStore_1-DPm0-0zB.jpg" property="og:image">
   <meta content="website" property="og:type">
-  <meta content="AXS " property="og:site_name">
-  <meta content="AXS " name="twitter:title">
+  <meta content="AXS" property="og:site_name">
+  <meta content="AXS" name="twitter:title">
   <meta content="Your ultimate companion for event discovery and seamless ticket management." name="twitter:description">
   <meta content="/assets/a6dfbbd55_Screenshot_20260515-022106_GooglePlayStore_1-DPm0-0zB.jpg" name="twitter:image">
   <meta content="summary_large_image" name="twitter:card">
   <meta content="yes" name="mobile-web-app-capable">
-  <meta content="AXS " name="apple-mobile-web-app-title">
+  <meta content="AXS" name="apple-mobile-web-app-title">
   <script type="application/ld+json">
    {"name":"AXS","@context":"https://schema.org","@type":"WebSite","url":"/"}
   </script>
-   <script type="module" crossorigin src="/assets/index-dSsJQOFp.js"></script>
-   <link rel="stylesheet" crossorigin href="/assets/index-sNRjZnEW.css">
+   <script type="module" crossorigin src="/assets/index-CMvStjwb.js"></script>
+   <link rel="modulepreload" crossorigin href="/assets/preload-helper-Czpn1I53.js">
+   <link rel="stylesheet" crossorigin href="/assets/index-C2Ie0z1l.css">
  </head>
  <body>
   <div id="root">
+   <div id="axs-loading" role="status" aria-live="polite" style="min-height:100dvh;display:grid;place-items:center;background:#000f2e;color:#fff;font:600 16px system-ui">Loading AXS…</div>
    <div data-seo-source="builder" id="seo-snapshot" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;">
     <main>
      <header>
@@ -41,16 +43,24 @@
        <li><a href="/profile">Profile Route</a> — Your ultimate companion for event discovery and seamless ticket management.</li>
        <li><a href="/admin">Admin Route</a> — Your ultimate companion for event discovery and seamless ticket management.</li>
        <li><a href="/tickets/create">Create Ticket Route</a> — Your ultimate companion for event discovery and seamless ticket management.</li>
-       <li><a href="/claim">Ticket Claim</a> — Ticket Claim on AXS . Your ultimate companion for event discovery and seamless ticket management.</li>
-       <li><a href="/signin">Sign In</a> — Sign In on AXS . Your ultimate companion for event discovery and seamless ticket management.</li>
-       <li><a href="/checkout">Checkout</a> — Checkout on AXS . Your ultimate companion for event discovery and seamless ticket management.</li>
-       <li><a href="/checkout/success">Ticket Confirmation</a> — Ticket Confirmation on AXS . Your ultimate companion for event discovery and seamless ticket management.</li>
-       <li><a href="/manage-tickets">Manage Tickets</a> — Manage Tickets on AXS . Your ultimate companion for event discovery and seamless ticket management.</li>
-       <li><a href="/order-receipt">Order Receipt</a> — Order Receipt on AXS . Your ultimate companion for event discovery and seamless ticket management.</li>
+       <li><a href="/claim">Ticket Claim</a> — Ticket Claim on AXS. Your ultimate companion for event discovery and seamless ticket management.</li>
+       <li><a href="/signin">Sign In</a> — Sign In on AXS. Your ultimate companion for event discovery and seamless ticket management.</li>
+       <li><a href="/checkout">Checkout</a> — Checkout on AXS. Your ultimate companion for event discovery and seamless ticket management.</li>
+       <li><a href="/checkout/success">Ticket Confirmation</a> — Ticket Confirmation on AXS. Your ultimate companion for event discovery and seamless ticket management.</li>
+       <li><a href="/manage-tickets">Manage Tickets</a> — Manage Tickets on AXS. Your ultimate companion for event discovery and seamless ticket management.</li>
+       <li><a href="/order-receipt">Order Receipt</a> — Order Receipt on AXS. Your ultimate companion for event discovery and seamless ticket management.</li>
       </ul>
      </nav>
     </main>
    </div>
   </div>
+  <script>
+   window.setTimeout(function () {
+    var loading = document.getElementById('axs-loading')
+    if (loading && loading.parentNode) {
+     loading.innerHTML = '<div style="text-align:center;padding:24px"><strong>AXS needs a refresh</strong><br><button type="button" onclick="location.reload(true)" style="margin-top:16px;padding:12px 18px;border:0;border-radius:999px;background:#2563eb;color:#fff;font-weight:700">Refresh app</button></div>'
+    }
+   }, 3000)
+  </script>
  </body>
 </html>
