@@ -13,7 +13,7 @@
   <script type="module">
    import { requireAuth, isAdminSession, renderAuthScreen, logout } from './auth-gate.js'
    import { searchTicketmasterEvents } from './ticketmaster-client.js'
-   window.AXS = { requireAuth, isAdminSession, renderAuthScreen, logout, searchTicketmasterEvents, ticketmasterEnabled: false }
+   window.AXS= { requireAuth, isAdminSession, renderAuthScreen, logout, searchTicketmasterEvents, ticketmasterEnabled: false }
    const session = await fetch('/api/auth/session').then(response => response.json()).catch(() => ({ user: null }))
    if (session.user) {
     sessionStorage.setItem('axs-auth-session', JSON.stringify(session.user))
@@ -23,17 +23,17 @@
    }
   </script>
   <meta content="Your ultimate companion for event discovery and seamless ticket management." name="description">
-  <meta content="AXS " property="og:title">
+  <meta content="AXS" property="og:title">
   <meta content="Your ultimate companion for event discovery and seamless ticket management." property="og:description">
   <meta content="a6dfbbd55_Screenshot_20260515-022106_GooglePlayStore_1.jpg" property="og:image">
   <meta content="website" property="og:type">
-  <meta content="AXS " property="og:site_name">
-  <meta content="AXS " name="twitter:title">
+  <meta content="AXS" property="og:site_name">
+  <meta content="AXS" name="twitter:title">
   <meta content="Your ultimate companion for event discovery and seamless ticket management." name="twitter:description">
   <meta content="a6dfbbd55_Screenshot_20260515-022106_GooglePlayStore_1.jpg" name="twitter:image">
   <meta content="summary_large_image" name="twitter:card">
   <meta content="yes" name="mobile-web-app-capable">
-  <meta content="AXS " name="apple-mobile-web-app-title">
+  <meta content="AXS" name="apple-mobile-web-app-title">
   <script type="application/ld+json">
    {"name":"AXS","@context":"https://schema.org","@type":"WebSite","url":"/"}
   </script>
@@ -52,12 +52,12 @@
        <li><a href="/profile">Profile Route</a> — Your ultimate companion for event discovery and seamless ticket management.</li>
        <li><a href="/admin">Admin Route</a> — Your ultimate companion for event discovery and seamless ticket management.</li>
        <li><a href="/tickets/create">Create Ticket Route</a> — Your ultimate companion for event discovery and seamless ticket management.</li>
-       <li><a href="/claim">Ticket Claim</a> — Ticket Claim on AXS . Your ultimate companion for event discovery and seamless ticket management.</li>
-       <li><a href="/signin">Sign In</a> — Sign In on AXS . Your ultimate companion for event discovery and seamless ticket management.</li>
-       <li><a href="/checkout">Checkout</a> — Checkout on AXS . Your ultimate companion for event discovery and seamless ticket management.</li>
-       <li><a href="/checkout/success">Ticket Confirmation</a> — Ticket Confirmation on AXS . Your ultimate companion for event discovery and seamless ticket management.</li>
-       <li><a href="/manage-tickets">Manage Tickets</a> — Manage Tickets on AXS . Your ultimate companion for event discovery and seamless ticket management.</li>
-       <li><a href="/order-receipt">Order Receipt</a> — Order Receipt on AXS . Your ultimate companion for event discovery and seamless ticket management.</li>
+       <li><a href="/claim">Ticket Claim</a> — Ticket Claim on AXS. Your ultimate companion for event discovery and seamless ticket management.</li>
+       <li><a href="/signin">Sign In</a> — Sign In on AXS. Your ultimate companion for event discovery and seamless ticket management.</li>
+       <li><a href="/checkout">Checkout</a> — Checkout on AXS. Your ultimate companion for event discovery and seamless ticket management.</li>
+       <li><a href="/checkout/success">Ticket Confirmation</a> — Ticket Confirmation on AXS. Your ultimate companion for event discovery and seamless ticket management.</li>
+       <li><a href="/manage-tickets">Manage Tickets</a> — Manage Tickets on AXS. Your ultimate companion for event discovery and seamless ticket management.</li>
+       <li><a href="/order-receipt">Order Receipt</a> — Order Receipt on AXS. Your ultimate companion for event discovery and seamless ticket management.</li>
       </ul>
      </nav>
     </main>

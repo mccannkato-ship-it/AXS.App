@@ -6,6 +6,7 @@ export async function searchTicketmasterEvents({ keyword = '', city = '', countr
   if (classificationName) params.set('classificationName', classificationName)
   if (startDateTime) params.set('startDateTime', startDateTime)
   const response = await fetch(`/api/events?${params.toString()}`)
+  if (response.status === 503) return []
   if (!response.ok) throw new Error('Unable to load events')
   const payload = await response.json()
   return payload?._embedded?.events || []
