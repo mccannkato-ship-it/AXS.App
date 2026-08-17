@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <link rel="manifest" href="/assets/manifest-Dm9hf8p_.json">
+  <link rel="manifest" href="/assets/manifest-BhtpQbS-.json">
   <link href="/assets/a6dfbbd55_Screenshot_20260515-022106_GooglePlayStore-xO1Il0FT.jpg" rel="icon" type="image/svg+xml">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
   <meta content="yes" name="apple-mobile-web-app-capable">
@@ -54,5 +54,13 @@
     </main>
    </div>
   </div>
+  <script>
+   window.setTimeout(function () {
+    var loading = document.getElementById('axs-loading')
+    if (loading && loading.parentNode) {
+     loading.innerHTML = '<div style="text-align:center;padding:24px"><strong>AXS needs a refresh</strong><br><button type="button" onclick="location.reload(true)" style="margin-top:16px;padding:12px 18px;border:0;border-radius:999px;background:#2563eb;color:#fff;font-weight:700">Refresh app</button></div>'
+    }
+   }, 3000)
+  </script>
  </body>
 </html>
