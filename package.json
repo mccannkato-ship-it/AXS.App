@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "start": "node server.mjs",
+    "start": "node --env-file-if-exists=/vercel/share/.env.project server.mjs",
     "typecheck": "tsc --noEmit"
   },
   "repository": {

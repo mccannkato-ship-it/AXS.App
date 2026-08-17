@@ -11,15 +11,16 @@
   <link href="styled.css.css" rel="stylesheet">
   <title>AXS</title>
   <script type="module">
-   import { requireAuth, isAdminSession } from './auth-gate.js'
+   import { requireAuth, isAdminSession, renderAuthScreen } from './auth-gate.js'
    import { searchTicketmasterEvents } from './ticketmaster-client.js'
    window.AXS = { requireAuth, isAdminSession, searchTicketmasterEvents }
-  </script>
-  <script crossorigin="" src="index-Dzz_ilae.js?v=7" type="module"></script>
-  <script>
-   window.addEventListener('load', () => {
-    if (location.pathname !== '/signin' && !sessionStorage.getItem('axs-auth-session')) window.AXS.requireAuth(() => {})
-   })
+   const session = await fetch('/api/auth/session').then(response => response.json()).catch(() => ({ user: null }))
+   if (session.user) {
+    sessionStorage.setItem('axs-auth-session', JSON.stringify(session.user))
+    await import('./index-Dzz_ilae.js?v=8')
+   } else {
+    renderAuthScreen()
+   }
   </script>
   <meta content="Your ultimate companion for event discovery and seamless ticket management." name="description">
   <meta content="AXS " property="og:title">
