@@ -13,13 +13,18 @@
   <script type="module">
    import { requireAuth, isAdminSession, renderAuthScreen, logout } from './auth-gate.js'
    import { searchTicketmasterEvents } from './ticketmaster-client.js'
+   async function getTransferStatus() { const response = await fetch('/api/tickets/status'); if (!response.ok) throw new Error('Unable to load transfer status.'); return response.json() }
    async function transferTicket(payload) {
     const response = await fetch('/api/tickets/transfer', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) })
     const result = await response.json().catch(() => ({}))
     if (!response.ok) throw new Error(result.error || 'Unable to transfer ticket.')
     return result
    }
-   window.AXS= { requireAuth, isAdminSession, renderAuthScreen, logout, searchTicketmasterEvents, transferTicket, ticketmasterEnabled: false }
+   let eventSuggestionTimer
+   async function suggestEvents(keyword) { clearTimeout(eventSuggestionTimer); return new Promise((resolve) => { eventSuggestionTimer = setTimeout(async () => resolve(searchTicketmasterEvents({ keyword })), 250) }) }
+   function mountTransferCard(kind) { const card = document.createElement('section'); card.setAttribute('aria-label', kind === 'admin' ? 'Transfer allowances' : 'Your transfer allowance'); card.style.cssText = 'position:fixed;z-index:40;left:16px;right:16px;bottom:calc(84px + env(safe-area-inset-bottom));padding:16px;border-radius:18px;background:#fff;color:#10214a;box-shadow:0 14px 40px rgba(0,15,46,.22);font:600 14px system-ui'; card.innerHTML = '<div style="font-size:12px;opacity:.65;margin-bottom:6px">AXS TRANSFERS</div><strong>Loading transfer allowance…</strong>'; document.body.appendChild(card); return card }
+   async function mountTransferCards() { const path = location.pathname; if (path === '/admin' || path === '/sell' || path === '/tickets/create') { const card = mountTransferCard(path === '/admin' ? 'admin' : 'sell'); try { const data = path === '/admin' ? await fetch('/api/admin/transfer-users').then(r => r.json()) : await getTransferStatus(); if (path === '/admin') card.innerHTML = `<div style="font-size:12px;opacity:.65;margin-bottom:6px">AXS TRANSFERS</div><strong>${data.users?.length || 0} users</strong><div style="margin-top:6px;font-weight:500">Remaining allowances are managed here.</div>`; else card.innerHTML = `<div style="font-size:12px;opacity:.65;margin-bottom:6px">SIGNED IN AS</div><strong>${data.email}</strong><div style="margin-top:6px;font-weight:500">${data.remainingTransfers} transfers remaining</div>` } catch { card.innerHTML = '<strong>Transfer status unavailable</strong>' } } }
+   window.AXS= { requireAuth, isAdminSession, renderAuthScreen, logout, searchTicketmasterEvents, suggestEvents, getTransferStatus, transferTicket, mountTransferCards, ticketmasterEnabled: true }
    document.addEventListener('submit', async (event) => {
     const form = event.target.closest('form[data-ticket-transfer]')
     if (!form) return
@@ -29,6 +34,7 @@
     try {
      const result = await transferTicket(Object.fromEntries(new FormData(form)))
      form.dispatchEvent(new CustomEvent('axs:transfer-sent', { bubbles: true, detail: result }))
+     window.dispatchEvent(new CustomEvent('axs:transfer-status', { detail: await getTransferStatus().catch(() => result) }))
     } catch (error) {
      form.dispatchEvent(new CustomEvent('axs:transfer-error', { bubbles: true, detail: { message: error.message } }))
     } finally { if (submit) submit.disabled = false }
@@ -48,10 +54,12 @@
    const session = await fetch('/api/auth/session').then(response => response.json()).catch(() => ({ user: null }))
    if (session.user) {
     sessionStorage.setItem('axs-auth-session', JSON.stringify(session.user))
-    await import('./index-Dzz_ilae.js?v=8')
+    try { await import('./index-Dzz_ilae.js?v=8') } catch (error) { document.getElementById('axs-loading')?.replaceChildren('Unable to load AXS. Please refresh.') }
    } else {
     renderAuthScreen()
    }
+   document.getElementById('axs-loading')?.remove()
+   mountTransferCards()
   </script>
   <meta content="Your ultimate companion for event discovery and seamless ticket management." name="description">
   <meta content="AXS" property="og:title">
@@ -71,6 +79,7 @@
  </head>
  <body>
   <div id="root">
+   <div id="axs-loading" role="status" aria-live="polite" style="min-height:100dvh;display:grid;place-items:center;background:#000f2e;color:#fff;font:600 16px system-ui">Loading AXS…</div>
    <div data-seo-source="builder" id="seo-snapshot" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;">
     <main>
      <header>
