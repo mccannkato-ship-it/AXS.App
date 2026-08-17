@@ -11,7 +11,7 @@
   <link href="styled.css.css" rel="stylesheet">
   <title>AXS</title>
   <script type="module">
-   import { requireAuth, isAdminSession, renderAuthScreen, renderApprovalScreen, logout } from './auth-gate.js?v=20260817-4'
+   import { requireAuth, isAdminSession, renderAuthScreen, renderApprovalScreen, logout } from './auth-gate.js?v=20260817-5'
    import { searchTicketmasterEvents } from './ticketmaster-client.js?v=20260817-2'
    async function getTransferStatus() { const response = await fetch('/api/tickets/status'); if (!response.ok) throw new Error('Unable to load transfer status.'); return response.json() }
    async function transferTicket(payload) {

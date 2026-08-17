@@ -4,7 +4,7 @@
   "description": "",
   "private": true,
   "scripts": {
-    "dev": "node --env-file-if-exists=/vercel/share/.env.project server.mjs & vite --host 0.0.0.0",
+    "dev": "node --env-file-if-exists=/vercel/share/.env.project server.mjs & node --env-file-if-exists=/vercel/share/.env.project node_modules/vite/bin/vite.js --host 0.0.0.0",
     "build": "vite build",
     "start": "node --env-file-if-exists=/vercel/share/.env.project server.mjs",
     "typecheck": "tsc --noEmit"
