@@ -1,0 +1,8 @@
+import { cert, getApps, initializeApp } from 'firebase-admin/app'
+import { getMessaging } from 'firebase-admin/messaging'
+import pg from 'pg'
+
+const pool = process.env.DATABASE_URL ? new pg.Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } }) : null
+let firebaseApp
+function getFirebaseApp() { if (firebaseApp) return firebaseApp; if (!process.env.FIREBASE_PROJECT_ID || !process.env.FIREBASE_CLIENT_EMAIL || !process.env.FIREBASE_PRIVATE_KEY) return null; firebaseApp = getApps()[0] || initializeApp({ credential: cert({ projectId: process.env.FIREBASE_PROJECT_ID, clientEmail: process.env.FIREBASE_CLIENT_EMAIL, privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n') }) }); return firebaseApp }
+export async function sendUserNotification(userId, title, body, data = {}) { const app = getFirebaseApp(); if (!app || !pool || !userId) return { sent: 0, skipped: true }; const result = await pool.query('SELECT id,token FROM push_tokens WHERE user_id=$1', [userId]); if (!result.rows.length) return { sent: 0 }; const response = await getMessaging(app).sendEachForMulticast({ tokens: result.rows.map(row => row.token), notification: { title, body }, data: Object.fromEntries(Object.entries(data).map(([key, value]) => [key, String(value)])) }); const invalidTokens = response.responses.map((item, index) => !item.success && ['messaging/registration-token-not-registered', 'messaging/invalid-registration-token'].includes(item.error?.code) ? result.rows[index].token : null).filter(Boolean); if (invalidTokens.length) await pool.query('DELETE FROM push_tokens WHERE token = ANY($1::text[])', [invalidTokens]); return { sent: response.successCount, failed: response.failureCount } }
