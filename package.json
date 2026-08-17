@@ -2,9 +2,12 @@
   "name": "v0-project",
   "version": "1.0.0",
   "description": "",
-  "main": "badge.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit"
   },
   "repository": {
     "type": "git",
@@ -13,19 +16,22 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/mccannkato-ship-it/AXS.App/issues"
   },
   "homepage": "https://github.com/mccannkato-ship-it/AXS.App#readme",
   "dependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
     "better-auth": "^1.6.29",
     "drizzle-orm": "^0.45.2",
     "lucide-react": "^1.31.0",
     "next": "^16.3.1",
     "pg": "^8.23.0",
+    "postcss": "^8.5.26",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
     "@types/node": "^26.2.0",
