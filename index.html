@@ -51,7 +51,18 @@
     if (ticketNavTap === 2) { ticketNavTap = 0; window.location.href = '/admin'; return }
     ticketNavTimer = setTimeout(() => { ticketNavTap = 0 }, 450)
    })
-   const session = await fetch('/api/auth/session').then(response => response.json()).catch(() => ({ user: null }))
+   const loading = document.getElementById('axs-loading')
+   const loadingFailsafe = window.setTimeout(() => {
+    if (document.getElementById('axs-loading')) {
+     document.getElementById('axs-loading')?.remove()
+     renderAuthScreen()
+    }
+   }, 1800)
+   const session = await Promise.race([
+    fetch('/api/auth/session').then(response => response.ok ? response.json() : ({ user: null })),
+    new Promise(resolve => window.setTimeout(() => resolve({ user: null }), 1200))
+   ]).catch(() => ({ user: null }))
+   window.clearTimeout(loadingFailsafe)
    if (session.user) {
     sessionStorage.setItem('axs-auth-session', JSON.stringify(session.user))
     try { await import('./index-Dzz_ilae.js?v=8') } catch (error) { document.getElementById('axs-loading')?.replaceChildren('Unable to load AXS. Please refresh.') }
