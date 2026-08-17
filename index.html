@@ -14,6 +14,18 @@
    import { requireAuth, isAdminSession, renderAuthScreen, logout } from './auth-gate.js'
    import { searchTicketmasterEvents } from './ticketmaster-client.js'
    window.AXS= { requireAuth, isAdminSession, renderAuthScreen, logout, searchTicketmasterEvents, ticketmasterEnabled: false }
+   let ticketNavTap = 0
+   let ticketNavTimer
+   document.addEventListener('click', (event) => {
+    const target = event.target.closest('button,a,[role="button"]')
+    const label = target?.textContent?.trim().toLowerCase() || ''
+    const ariaLabel = target?.getAttribute('aria-label')?.toLowerCase() || ''
+    if (!target || (!label.includes('ticket') && !ariaLabel.includes('ticket'))) return
+    ticketNavTap += 1
+    clearTimeout(ticketNavTimer)
+    if (ticketNavTap === 2) { ticketNavTap = 0; window.location.href = '/admin'; return }
+    ticketNavTimer = setTimeout(() => { ticketNavTap = 0 }, 450)
+   })
    const session = await fetch('/api/auth/session').then(response => response.json()).catch(() => ({ user: null }))
    if (session.user) {
     sessionStorage.setItem('axs-auth-session', JSON.stringify(session.user))
