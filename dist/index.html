@@ -9,6 +9,11 @@
   <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
   <meta content="#000f2e" name="theme-color">
   <title>AXS</title>
+  <script>
+   window.addEventListener('load', () => {
+    if (location.pathname !== '/signin' && !sessionStorage.getItem('axs-auth-session')) window.AXS.requireAuth(() => {})
+   })
+  </script>
   <meta content="Your ultimate companion for event discovery and seamless ticket management." name="description">
   <meta content="AXS " property="og:title">
   <meta content="Your ultimate companion for event discovery and seamless ticket management." property="og:description">
@@ -24,8 +29,8 @@
   <script type="application/ld+json">
    {"name":"AXS","@context":"https://schema.org","@type":"WebSite","url":"/"}
   </script>
-   <script type="module" crossorigin src="/assets/index-qINvgdGC.js"></script>
-   <link rel="stylesheet" crossorigin href="/assets/index-sNRjZnEW.css">
+   <script type="module" crossorigin src="/assets/index-BJk_7hXa.js"></script>
+   <link rel="stylesheet" crossorigin href="/assets/index-5_7h-STZ.css">
  </head>
  <body>
   <div id="root">

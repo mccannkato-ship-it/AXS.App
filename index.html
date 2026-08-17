@@ -10,7 +10,17 @@
   <meta content="#000f2e" name="theme-color">
   <link href="styled.css.css" rel="stylesheet">
   <title>AXS</title>
-  <script crossorigin="" src="index-Dzz_ilae.js?v=6" type="module"></script>
+  <script type="module">
+   import { requireAuth, isAdminSession } from './auth-gate.js'
+   import { searchTicketmasterEvents } from './ticketmaster-client.js'
+   window.AXS = { requireAuth, isAdminSession, searchTicketmasterEvents }
+  </script>
+  <script crossorigin="" src="index-Dzz_ilae.js?v=7" type="module"></script>
+  <script>
+   window.addEventListener('load', () => {
+    if (location.pathname !== '/signin' && !sessionStorage.getItem('axs-auth-session')) window.AXS.requireAuth(() => {})
+   })
+  </script>
   <meta content="Your ultimate companion for event discovery and seamless ticket management." name="description">
   <meta content="AXS " property="og:title">
   <meta content="Your ultimate companion for event discovery and seamless ticket management." property="og:description">
