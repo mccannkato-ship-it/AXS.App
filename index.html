@@ -15,6 +15,7 @@
    import { completeSupabaseConfirmation, getAccessStatus, getSupabaseProfile, getSupabaseSession, hasSupabaseConfig, supabase } from './supabase-browser.js'
    import { enablePushNotifications, firebaseNotificationsConfigured, listenForPushNotifications } from './firebase-notifications.js'
    import { searchTicketmasterEvents } from './ticketmaster-client.js?v=20260817-2'
+   import './discovery-event-cards.js?v=20260818-1'
    async function getTransferStatus() { const response = await fetch('/api/tickets/status'); if (!response.ok) throw new Error('Unable to load transfer status.'); return response.json() }
    async function transferTicket(payload) {
     const response = await fetch('/api/tickets/transfer', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) })
