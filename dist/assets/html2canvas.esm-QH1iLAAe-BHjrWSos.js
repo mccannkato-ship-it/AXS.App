@@ -1,1 +1,0 @@
-async function e(){throw Error(`PDF canvas rendering is unavailable in this static build.`)}export{e as default};

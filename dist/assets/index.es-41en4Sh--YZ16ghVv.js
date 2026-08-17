@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-BJX4KsWX.js";var t;e((()=>{t={fromString(){throw Error(`SVG rendering is unavailable in this static build.`)}}}))();export{t as default};

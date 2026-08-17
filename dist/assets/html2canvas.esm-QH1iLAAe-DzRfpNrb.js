@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-BJX4KsWX.js";async function t(){throw Error(`PDF canvas rendering is unavailable in this static build.`)}e((()=>{}))();export{t as default};
