@@ -6,7 +6,7 @@ import { randomBytes, scryptSync, timingSafeEqual } from 'node:crypto'
 import pg from 'pg'
 
 const root = fileURLToPath(new URL('.', import.meta.url))
-const port = Number(process.env.PORT || 5173)
+const port = Number(process.env.API_PORT || 5174)
 const pool = process.env.DATABASE_URL ? new pg.Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } }) : null
 const mime = { '.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json; charset=utf-8','.jpg':'image/jpeg','.jpeg':'image/jpeg','.png':'image/png','.svg':'image/svg+xml','.ico':'image/x-icon' }
 const cookie = (req) => Object.fromEntries((req.headers.cookie || '').split(';').filter(Boolean).map(v => v.trim().split('=')))
