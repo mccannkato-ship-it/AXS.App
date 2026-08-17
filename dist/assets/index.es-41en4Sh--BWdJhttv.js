@@ -1,1 +1,0 @@
-var e={fromString(){throw Error(`SVG rendering is unavailable in this static build.`)}};export{e as default};

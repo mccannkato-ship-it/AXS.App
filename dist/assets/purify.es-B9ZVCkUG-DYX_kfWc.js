@@ -1,1 +1,0 @@
-var e={sanitize(e){return String(e??``)}};export{e as default};
