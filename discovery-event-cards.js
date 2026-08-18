@@ -52,7 +52,7 @@ accountBannerStyle.textContent = `.axs-account-banner{position:sticky;top:0;z-in
 document.head.appendChild(accountBannerStyle)
 
 const greetingStyle = document.createElement('style')
-greetingStyle.textContent = `.axs-compact-greeting{font-size:clamp(26px,7vw,38px)!important;line-height:1.1!important}`
+greetingStyle.textContent = `.axs-compact-greeting{font-size:clamp(18px,5vw,24px)!important;line-height:1.2!important}`
 document.head.appendChild(greetingStyle)
 
 function sizeDiscoveryGreeting() { const greeting = [...document.querySelectorAll('h1,h2,h3,p,span')].find((element) => /good (morning|afternoon|evening)/i.test(element.textContent || '')); if (greeting) { greeting.classList.add('axs-compact-greeting'); return true } return false }
