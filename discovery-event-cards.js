@@ -23,7 +23,12 @@ function renderCard(events, title = 'Live Events', mode = 'discover') {
 
 function bindCardStack() { const stack = document.querySelector('.axs-discovery-event-stack'); if (!stack || stack.dataset.bound || stack.querySelector('.axs-discovery-empty')) return; stack.dataset.bound = 'true'; let animating = false; stack.addEventListener('click', (event) => { if (animating) return; const active = stack.querySelector('.axs-discovery-event.pos-1'); const second = stack.querySelector('.axs-discovery-event.pos-2'); const third = stack.querySelector('.axs-discovery-event.pos-3'); if (!active || !second || !third || event.target.closest('a') !== active) return; event.preventDefault(); animating = true; active.classList.remove('pos-1'); active.classList.add('swiping-out'); second.classList.remove('pos-2'); second.classList.add('pos-1'); third.classList.remove('pos-3'); third.classList.add('pos-2'); setTimeout(() => { active.classList.remove('swiping-out'); active.classList.add('pos-3'); setTimeout(() => { animating = false }, 100) }, 400) }) }
 
+function isAccountPage() { return [...document.querySelectorAll('h1,h2,h3,nav,button,[role="tab"]')].some((element) => /^(account|profile)$/i.test((element.textContent || '').trim()) || /account/i.test(element.getAttribute('aria-label') || '')) }
+
+function normalizeAccountLayout() { if (!isAccountPage()) return false; document.querySelectorAll('.axs-discovery-cards').forEach((element) => element.remove()); const help = [...document.querySelectorAll('h1,h2,h3')].find((element) => /help\s*&\s*more/i.test(element.textContent || '')); const location = [...document.querySelectorAll('h1,h2,h3,p,span,button')].find((element) => /home location/i.test(element.textContent || '')); const helpGroup = help?.closest('section,article') || help?.parentElement; const locationGroup = location?.closest('section,article') || location?.parentElement; if (helpGroup && locationGroup && locationGroup.parentElement) locationGroup.parentElement.insertBefore(helpGroup, locationGroup.nextSibling); return true }
+
 async function mountDiscoveryCards() {
+  if (isAccountPage()) { normalizeAccountLayout(); return false }
   if (document.querySelector('.axs-discovery-cards')) return true
   const anchor = findLocationAnchor()
   if (!anchor) return false
@@ -77,8 +82,9 @@ function bindSearch() {
   })
 }
 
-const observer = new MutationObserver(() => { bindSearch(); mountDiscoveryCards(); sizeDiscoveryGreeting() })
+const observer = new MutationObserver(() => { bindSearch(); mountDiscoveryCards(); normalizeAccountLayout(); sizeDiscoveryGreeting() })
 observer.observe(document.body, { childList: true, subtree: true })
 mountDiscoveryCards()
+normalizeAccountLayout()
 bindSearch()
 sizeDiscoveryGreeting()
