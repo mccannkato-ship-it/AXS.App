@@ -8,7 +8,7 @@ function findLocationAnchor() {
   return [...document.querySelectorAll('input, button, label, h1, h2, h3, p, span')].find((element) => /location|near you|your city/i.test(element.textContent || element.placeholder || ''))
 }
 
-function renderCard(events, title = 'Explore Event Genres', mode = 'discover') {
+function renderCard(events, title = 'Live Events', mode = 'discover') {
   const cards = events.slice(0, 3).map((event, index) => {
     const image = event.images?.find((item) => item.ratio === '16_9')?.url || event.images?.[0]?.url || ''
     const venue = event._embedded?.venues?.[0]
@@ -25,11 +25,14 @@ function bindCardStack() { const stack = document.querySelector('.axs-discovery-
 
 function isAccountPage() { return [...document.querySelectorAll('h1,h2,h3,nav,button,[role="tab"]')].some((element) => /^(account|profile)$/i.test((element.textContent || '').trim()) || /account/i.test(element.getAttribute('aria-label') || '')) }
 
+function removeLegacyDiscoverGenres() { if (isAccountPage()) return false; [...document.querySelectorAll('h1,h2,h3,section,article,div')].filter((element) => /explore event genres/i.test((element.textContent || '').trim())).forEach((element) => { if (element.querySelector('img,[style*="background"],a') || element.tagName === 'SECTION') element.remove() }); return true }
+
 function normalizeAccountLayout() { if (!isAccountPage()) return false; document.querySelectorAll('.axs-discovery-cards').forEach((element) => element.remove()); const help = [...document.querySelectorAll('h1,h2,h3')].find((element) => /help\s*&\s*more/i.test(element.textContent || '')); const location = [...document.querySelectorAll('h1,h2,h3,p,span,button')].find((element) => /home location/i.test(element.textContent || '')); const helpGroup = help?.closest('section,article') || help?.parentElement; const locationGroup = location?.closest('section,article') || location?.parentElement; if (helpGroup && locationGroup && locationGroup.parentElement) locationGroup.parentElement.insertBefore(helpGroup, locationGroup.nextSibling); return true }
 
 async function mountDiscoveryCards() {
   if (isAccountPage()) { normalizeAccountLayout(); return false }
   if (document.querySelector('.axs-discovery-search-results')) return false
+  removeLegacyDiscoverGenres()
   if (document.querySelector('.axs-discovery-cards')) return true
   const anchor = findLocationAnchor()
   if (!anchor) return false
@@ -54,7 +57,7 @@ discoveryStyle.textContent = `.axs-discovery-cards{box-sizing:border-box;width:1
 document.head.appendChild(discoveryStyle)
 
 const greetingStyle = document.createElement('style')
-greetingStyle.textContent = `.axs-compact-greeting{font-size:clamp(14px,3.8vw,19px)!important;line-height:1.2!important}`
+greetingStyle.textContent = `.axs-compact-greeting{font-size:clamp(12px,3vw,16px)!important;line-height:1.2!important}`
 document.head.appendChild(greetingStyle)
 
 function sizeDiscoveryGreeting() { const greeting = [...document.querySelectorAll('h1,h2,h3,p,span')].find((element) => /good (morning|afternoon|evening)/i.test(element.textContent || '')); if (greeting) { greeting.classList.add('axs-compact-greeting'); return true } return false }
@@ -83,7 +86,7 @@ function bindSearch() {
   })
 }
 
-const observer = new MutationObserver(() => { bindSearch(); mountDiscoveryCards(); normalizeAccountLayout(); sizeDiscoveryGreeting() })
+const observer = new MutationObserver(() => { bindSearch(); removeLegacyDiscoverGenres(); mountDiscoveryCards(); normalizeAccountLayout(); sizeDiscoveryGreeting() })
 observer.observe(document.body, { childList: true, subtree: true })
 mountDiscoveryCards()
 normalizeAccountLayout()
