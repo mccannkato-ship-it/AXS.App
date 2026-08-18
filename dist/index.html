@@ -24,9 +24,8 @@
   <script type="application/ld+json">
    {"name":"AXS","@context":"https://schema.org","@type":"WebSite","url":"/"}
   </script>
-   <script type="module" crossorigin src="/assets/index-BPn6Z9An.js"></script>
-   <link rel="modulepreload" crossorigin href="/assets/rolldown-runtime-BJX4KsWX.js">
-   <link rel="modulepreload" crossorigin href="/assets/preload-helper-B3lAiCO1.js">
+   <script type="module" crossorigin src="/assets/index-O4i8QZbD.js"></script>
+   <link rel="modulepreload" crossorigin href="/assets/preload-helper-Czpn1I53.js">
    <link rel="stylesheet" crossorigin href="/assets/index-C2Ie0z1l.css">
  </head>
  <body>
@@ -57,9 +56,10 @@
   </div>
   <script>
    window.setTimeout(function () {
+    var previewMode = new URLSearchParams(location.search).get('preview') === '1'
     var loading = document.getElementById('axs-loading')
     if (loading && loading.parentNode) {
-     loading.innerHTML = '<div style="text-align:center;padding:24px"><strong>AXS needs a refresh</strong><br><button type="button" onclick="location.reload(true)" style="margin-top:16px;padding:12px 18px;border:0;border-radius:999px;background:#2563eb;color:#fff;font-weight:700">Refresh app</button></div>'; import('/assets/auth-gate-nx9-kcXa.js?v=20260817-4').then(function(auth){ auth.renderAuthScreen() }).catch(function(){ loading.innerHTML='<div style="text-align:center;padding:24px"><strong>Unable to load sign in</strong><br><button type="button" onclick="location.reload(true)" style="margin-top:16px;padding:12px 18px;border:0;border-radius:999px;background:#2563eb;color:#fff;font-weight:700">Try again</button></div>' })
+     loading.innerHTML = '<div style="text-align:center;padding:24px"><strong>' + (previewMode ? 'Preview is still loading' : 'AXS needs a refresh') + '</strong><br><button type="button" onclick="location.reload(true)" style="margin-top:16px;padding:12px 18px;border:0;border-radius:999px;background:#2563eb;color:#fff;font-weight:700">Refresh app</button></div>'; if (!previewMode) import('/assets/auth-gate-CNTPiUNf.js?v=20260818-preview1').then(function(auth){ auth.renderAuthScreen() }).catch(function(){ loading.innerHTML='<div style="text-align:center;padding:24px"><strong>Unable to load sign in</strong><br><button type="button" onclick="location.reload(true)" style="margin-top:16px;padding:12px 18px;border:0;border-radius:999px;background:#2563eb;color:#fff;font-weight:700">Try again</button></div>' })
     }
    }, 3000)
   </script>
