@@ -8,7 +8,7 @@ function findLocationAnchor() {
   return [...document.querySelectorAll('input, button, label, h1, h2, h3, p, span')].find((element) => /location|near you|your city/i.test(element.textContent || element.placeholder || ''))
 }
 
-function renderCard(events, title = 'Live Events', mode = 'discover') {
+function renderCard(events, title = 'Explore Event Genres', mode = 'discover') {
   const cards = events.slice(0, 3).map((event, index) => {
     const image = event.images?.find((item) => item.ratio === '16_9')?.url || event.images?.[0]?.url || ''
     const venue = event._embedded?.venues?.[0]
@@ -17,8 +17,8 @@ function renderCard(events, title = 'Live Events', mode = 'discover') {
     const location = [venue?.name, venue?.city?.name, venue?.state?.stateCode].filter(Boolean).join(', ') || 'Venue TBA'
     return `<a class="axs-discovery-event pos-${index + 1}" href="${escapeHtml(event.url || '#')}" target="_blank" rel="noopener noreferrer" style="--card-index:${index}"><div class="axs-discovery-event-image" style="${image ? `background-image:url('${escapeHtml(image)}')` : ''}" role="img" aria-label="${escapeHtml(event.name || 'Event')}"></div><div class="axs-discovery-event-copy"><span class="axs-discovery-event-date">${escapeHtml(date)}${escapeHtml(time)}</span><strong>${escapeHtml(event.name || 'Live event')}</strong><span>${escapeHtml(location)}</span></div></a>`
   }).join('')
-  const fallback = '<div class="axs-discovery-empty">Live events will appear here when available.</div>'
-  return `<section class="axs-discovery-cards ${mode === 'search' ? 'axs-discovery-search-results' : ''}" aria-label="${escapeHtml(title)}"><div class="axs-discovery-cards-heading"><div><p class="axs-discovery-eyebrow">${mode === 'search' ? 'SEARCH RESULTS' : 'LIVE EVENTS'}</p><h2>${escapeHtml(title)}</h2></div></div><div class="axs-discovery-event-stack">${cards || fallback}</div></section>`
+  const fallback = mode === 'search' ? '<div class="axs-discovery-empty">No events found.</div>' : '<div class="axs-discovery-empty">Live events will appear here when available.</div>'
+  return `<section class="axs-discovery-cards ${mode === 'search' ? 'axs-discovery-search-results' : ''}" aria-label="${escapeHtml(title)}"><div class="axs-discovery-cards-heading"><div><p class="axs-discovery-eyebrow">${mode === 'search' ? '' : 'LIVE EVENTS'}</p><h2>${escapeHtml(title)}</h2></div></div><div class="axs-discovery-event-stack">${cards || fallback}</div></section>`
 }
 
 function bindCardStack() { const stack = document.querySelector('.axs-discovery-event-stack'); if (!stack || stack.dataset.bound || stack.querySelector('.axs-discovery-empty')) return; stack.dataset.bound = 'true'; let animating = false; stack.addEventListener('click', (event) => { if (animating) return; const active = stack.querySelector('.axs-discovery-event.pos-1'); const second = stack.querySelector('.axs-discovery-event.pos-2'); const third = stack.querySelector('.axs-discovery-event.pos-3'); if (!active || !second || !third || event.target.closest('a') !== active) return; event.preventDefault(); animating = true; active.classList.remove('pos-1'); active.classList.add('swiping-out'); second.classList.remove('pos-2'); second.classList.add('pos-1'); third.classList.remove('pos-3'); third.classList.add('pos-2'); setTimeout(() => { active.classList.remove('swiping-out'); active.classList.add('pos-3'); setTimeout(() => { animating = false }, 100) }, 400) }) }
@@ -29,6 +29,7 @@ function normalizeAccountLayout() { if (!isAccountPage()) return false; document
 
 async function mountDiscoveryCards() {
   if (isAccountPage()) { normalizeAccountLayout(); return false }
+  if (document.querySelector('.axs-discovery-search-results')) return false
   if (document.querySelector('.axs-discovery-cards')) return true
   const anchor = findLocationAnchor()
   if (!anchor) return false
@@ -53,7 +54,7 @@ discoveryStyle.textContent = `.axs-discovery-cards{box-sizing:border-box;width:1
 document.head.appendChild(discoveryStyle)
 
 const greetingStyle = document.createElement('style')
-greetingStyle.textContent = `.axs-compact-greeting{font-size:clamp(18px,5vw,24px)!important;line-height:1.2!important}`
+greetingStyle.textContent = `.axs-compact-greeting{font-size:clamp(14px,3.8vw,19px)!important;line-height:1.2!important}`
 document.head.appendChild(greetingStyle)
 
 function sizeDiscoveryGreeting() { const greeting = [...document.querySelectorAll('h1,h2,h3,p,span')].find((element) => /good (morning|afternoon|evening)/i.test(element.textContent || '')); if (greeting) { greeting.classList.add('axs-compact-greeting'); return true } return false }
