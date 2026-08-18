@@ -5,7 +5,7 @@ function escapeHtml(value) {
 }
 
 function findLocationAnchor() {
-  return [...document.querySelectorAll('input, button, label, h1, h2, h3, p, span')].find((element) => /location|near you|your city/i.test(element.textContent || element.placeholder || ''))
+  return [...document.querySelectorAll('button, input, label, h1, h2, h3, p, span')].find((element) => /location|near you|your city/i.test(element.textContent || element.placeholder || '') || (element.tagName === 'BUTTON' && /,\s*[A-Z]{2}\b/.test(element.textContent || ''))) || document.querySelector('input[placeholder*="Search"]')
 }
 
 function renderCard(events, title = 'Live Events', mode = 'discover') {
@@ -25,7 +25,7 @@ function bindCardStack() { const stack = document.querySelector('.axs-discovery-
 
 function isAccountPage() { return [...document.querySelectorAll('h1,h2,h3,nav,button,[role="tab"]')].some((element) => /^(account|profile)$/i.test((element.textContent || '').trim()) || /account/i.test(element.getAttribute('aria-label') || '')) }
 
-function removeLegacyDiscoverGenres() { if (isAccountPage()) return false; [...document.querySelectorAll('h1,h2,h3,section,article,div')].filter((element) => /explore event genres/i.test((element.textContent || '').trim())).forEach((element) => { if (element.querySelector('img,[style*="background"],a') || element.tagName === 'SECTION') element.remove() }); return true }
+function removeLegacyDiscoverGenres() { if (isAccountPage()) return false; const heading = [...document.querySelectorAll('h1,h2,h3')].find((element) => /explore event genres/i.test((element.textContent || '').trim())); if (heading) { const group = heading.parentElement?.parentElement || heading.parentElement; if (group && !group.querySelector('.axs-discovery-cards')) group.remove() } return true }
 
 function normalizeAccountLayout() { if (!isAccountPage()) return false; document.querySelectorAll('.axs-discovery-cards').forEach((element) => element.remove()); const help = [...document.querySelectorAll('h1,h2,h3')].find((element) => /help\s*&\s*more/i.test(element.textContent || '')); const location = [...document.querySelectorAll('h1,h2,h3,p,span,button')].find((element) => /home location/i.test(element.textContent || '')); const helpGroup = help?.closest('section,article') || help?.parentElement; const locationGroup = location?.closest('section,article') || location?.parentElement; if (helpGroup && locationGroup && locationGroup.parentElement) locationGroup.parentElement.insertBefore(helpGroup, locationGroup.nextSibling); return true }
 
