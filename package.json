@@ -25,6 +25,7 @@
     "@emotion/is-prop-valid": "^1.4.0",
     "@supabase/supabase-js": "^2.112.3",
     "@tailwindcss/postcss": "^4.3.3",
+    "@vercel/blob": "^2.8.0",
     "better-auth": "^1.6.29",
     "drizzle-orm": "^0.45.2",
     "firebase": "^12.17.1",
